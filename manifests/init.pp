@@ -2,9 +2,17 @@
 #
 # This module manages rsync
 #
-class rsync {
+class rsync (
+  $rsync_server     = false,
+)
+{
 
-  package { 'rsync':
-    ensure => installed,
-  } -> Rsync::Get<| |>
+  include stdlib
+
+  if $rsync_server {
+    class { 'rsync::package':
+      notify => Class['rsync::service'],
+    }
+  }
+
 }
